@@ -11,6 +11,7 @@
         <module>gmall0826-common</module>
     </modules>
 
+    <!--注释-->
     <packaging>pom</packaging>
 
     <properties>
