@@ -17,6 +17,7 @@
         <module>gmall0826-common</module>
         <module>gmall0826-mock</module>
         <module>gmall0826-logger</module>
+        <module>gmall0826-realtime</module>
     </modules>
 
     <!--注释-->
@@ -111,6 +112,18 @@
                 <groupId>org.apache.spark</groupId>
                 <artifactId>spark-streaming-kafka-0-10_2.11</artifactId>
                 <version>${spark.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-clients</artifactId>
+                <version>0.10.2.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>2.9.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
