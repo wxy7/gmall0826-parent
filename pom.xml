@@ -18,6 +18,7 @@
         <module>gmall0826-mock</module>
         <module>gmall0826-logger</module>
         <module>gmall0826-realtime</module>
+        <module>gmall0826-publisher</module>
     </modules>
 
     <!--注释-->
@@ -125,6 +126,9 @@
                 <artifactId>jedis</artifactId>
                 <version>2.9.0</version>
             </dependency>
+
+
+
         </dependencies>
     </dependencyManagement>
 

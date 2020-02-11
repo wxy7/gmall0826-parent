@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSON
 import com.atguigu.gmall0826.common.constants.GmallConstant
 import com.atguigu.gmall0826.realtime.app.bean.StartupLog
 import com.atguigu.gmall0826.realtime.app.util.{MyKafkaUtil, RedisUtil}
+import org.apache.hadoop.conf.Configuration
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.spark.SparkConf
 import org.apache.spark.broadcast.Broadcast
@@ -15,7 +16,7 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.streaming.dstream.{DStream, InputDStream}
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 import redis.clients.jedis.Jedis
-
+import org.apache.phoenix.spark._
 /**
   * author : wuyan
   * create : 2020-02-07 14:14
@@ -125,7 +126,7 @@ object DauApp {
         //性能优化 foreachPartition 一个分区建立一个redis连接
         val jedis: Jedis = RedisUtil.getJedisClient
         for (startupLog <- itr) {
-          println(startupLog)
+//          println(startupLog)
           val dauKey = "dau:" + startupLog.logDate
           jedis.sadd(dauKey,startupLog.mid)
           jedis.expire(dauKey,60*60*24)
@@ -133,6 +134,13 @@ object DauApp {
         jedis.close()
       }
       }
+    }
+
+    realFilteredDstream.foreachRDD{rdd =>
+      rdd.saveToPhoenix("GMALL0826_DAU",
+        Seq("MID","UID","APPID","AREA","OS","CH","LOGTYPE","VS","LOGDATE","LOGHOUR","TS"),
+        new Configuration(),
+        Some("hadoop102,hadoop103,hadoop104:2181"))
     }
 
 
