@@ -24,7 +24,7 @@ public class CanalClient {
         while (true){
             canalConnector.connect();
             //TODO 2 抓取数据
-            canalConnector.subscribe("*.*");
+            canalConnector.subscribe("*.*");//订阅所有库所有表
             //1个message对象包含了100个什么？
             //100个SQL单位 1个SQL单位 = 1个SQL执行后影响的row集合
             Message message = canalConnector.get(100);
