@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.atguigu.gmall0826.publisher.service.PublisherService;
 import org.apache.commons.lang.time.DateUtils;
+import org.jcodings.util.Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,6 +40,13 @@ public class PublisherController {
         dauMidMap.put("value", 233);
         list.add(dauMidMap);
 
+        Double orderAmount = publisherService.getOrderAmount(date);
+        HashMap orderAmountMap = new HashMap();
+        orderAmountMap.put("id", "order_amount");
+        orderAmountMap.put("name", "新增交易额");
+        orderAmountMap.put("value", orderAmount);
+        list.add(orderAmountMap);
+
         String result = JSON.toJSONString(list);
 
         return result;
@@ -46,14 +54,28 @@ public class PublisherController {
 
     @GetMapping("realtime-hour")
     public String getRealtimeHour(@RequestParam("id") String id,@RequestParam("date") String date){
-        Map<String, Long> todayHour = publisherService.getDauTotalHour(date);
-        Map<String, Long> yesterdayHour = publisherService.getDauTotalHour(getYesterday(date));
-        HashMap map = new HashMap();
-        map.put("yesterday", yesterdayHour);
-        map.put("today", todayHour);
-        Object o = JSONArray.toJSON(map);
-        String result = o.toString();
-        return result;
+        if("dau".equals(id)){
+            Map<String, Long> todayHour = publisherService.getDauTotalHour(date);
+            Map<String, Long> yesterdayHour = publisherService.getDauTotalHour(getYesterday(date));
+            HashMap map = new HashMap();
+            map.put("yesterday", yesterdayHour);
+            map.put("today", todayHour);
+            Object o = JSONArray.toJSON(map);
+            String result = o.toString();
+            return result;
+        }else if("order_amount".equals(id)){
+            Map<String, Double> todayHour = publisherService.getOrderAmountHour(date);
+            Map<String, Double> yesterdayHour = publisherService.getOrderAmountHour(getYesterday(date));
+//            System.out.println("todayHour:" + todayHour);
+//            System.out.println("yesterdayHour:" + yesterdayHour);
+            HashMap map = new HashMap();
+            map.put("yesterday", yesterdayHour);
+            map.put("today", todayHour);
+            Object o = JSONArray.toJSON(map);
+            String result = o.toString();
+            return result;
+        }
+        return null;
     }
 
 

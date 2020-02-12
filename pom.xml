@@ -19,6 +19,7 @@
         <module>gmall0826-logger</module>
         <module>gmall0826-realtime</module>
         <module>gmall0826-publisher</module>
+        <module>gmall0826-canal</module>
     </modules>
 
     <!--注释-->
