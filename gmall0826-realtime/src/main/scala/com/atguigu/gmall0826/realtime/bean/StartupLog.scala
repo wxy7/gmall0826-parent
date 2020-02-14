@@ -1,4 +1,4 @@
-package com.atguigu.gmall0826.realtime.app.bean
+package com.atguigu.gmall0826.realtime.bean
 
 /**
   * author : wuyan

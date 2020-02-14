@@ -1,13 +1,12 @@
 package com.atguigu.gmall0826.realtime.app
 
 import java.text.SimpleDateFormat
-import java.util.Set
-import java.util.Date
+import java.util.{Date, Set}
 
 import com.alibaba.fastjson.JSON
 import com.atguigu.gmall0826.common.constants.GmallConstant
-import com.atguigu.gmall0826.realtime.app.bean.StartupLog
-import com.atguigu.gmall0826.realtime.app.util.{MyKafkaUtil, RedisUtil}
+import com.atguigu.gmall0826.realtime.bean.StartupLog
+import com.atguigu.gmall0826.realtime.util.{MyKafkaUtil, RedisUtil}
 import org.apache.hadoop.conf.Configuration
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.spark.SparkConf

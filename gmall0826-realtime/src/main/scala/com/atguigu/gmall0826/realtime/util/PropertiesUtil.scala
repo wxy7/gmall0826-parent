@@ -1,4 +1,4 @@
-package com.atguigu.gmall0826.realtime.app.util
+package com.atguigu.gmall0826.realtime.util
 
 import java.io.InputStreamReader
 import java.util.Properties

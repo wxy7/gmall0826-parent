@@ -1,4 +1,4 @@
-package com.atguigu.gmall0826.realtime.app.util
+package com.atguigu.gmall0826.realtime.util
 
 import redis.clients.jedis.{Jedis, JedisPool, JedisPoolConfig}
 

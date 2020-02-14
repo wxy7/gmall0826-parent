@@ -1,14 +1,14 @@
-package com.atguigu.gmall0826.realtime.app.util
+package com.atguigu.gmall0826.realtime.util
 
 /**
   * author : wuyan
   * create : 2020-02-07 15:11
   * desc : 
   */
-import org.apache.kafka.common.serialization.StringDeserializer
 import java.util.Properties
 
 import org.apache.kafka.clients.consumer.ConsumerRecord
+import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.spark.streaming.StreamingContext
 import org.apache.spark.streaming.dstream.InputDStream
 import org.apache.spark.streaming.kafka010.{ConsumerStrategies, KafkaUtils, LocationStrategies}
