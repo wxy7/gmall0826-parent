@@ -27,8 +27,13 @@ public class CanalHandler {
 
     public void handle(){
         if (this.rowDataList != null && this.rowDataList.size() > 0){
+            //下单业务主表
             if (tableName.equals("order_info") && eventType == CanalEntry.EventType.INSERT){
                 sendKafka(rowDataList, GmallConstant.KAFKA_TOPIC_ORDER);
+            }else if(tableName.equals("order_detail") && eventType == CanalEntry.EventType.INSERT){
+                sendKafka(rowDataList, GmallConstant.KAFKA_TOPIC_ORDER_DETAIL);
+            }else if(tableName.equals("user_info") && (eventType == CanalEntry.EventType.INSERT || eventType == CanalEntry.EventType.UPDATE)){
+                sendKafka(rowDataList, GmallConstant.KAFKA_TOPIC_USER_INFO);
             }
         }
     }
@@ -44,7 +49,13 @@ public class CanalHandler {
                 jsonObject.put(column.getName(), column.getValue());
             }
             String jsonString = jsonObject.toJSONString();
-            MyKafkaSender.send(GmallConstant.KAFKA_TOPIC_ORDER, jsonString);
+            //发送延迟，双流join时如果不处理就会产生数据丢失
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            MyKafkaSender.send(topic, jsonString);
         }
     }
 

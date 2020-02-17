@@ -6,11 +6,12 @@ import java.util._
 import com.alibaba.fastjson.JSON
 import com.atguigu.gmall0826.common.constants.GmallConstant
 import com.atguigu.gmall0826.realtime.bean.{AlertInfo, EventInfo}
-import com.atguigu.gmall0826.realtime.util.MyKafkaUtil
+import com.atguigu.gmall0826.realtime.util.{MyEsUtil, MyKafkaUtil}
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.dstream.{DStream, InputDStream}
 import org.apache.spark.streaming.{Seconds, StreamingContext}
+import collection.JavaConversions._
 
 import scala.util.control.Breaks
 
@@ -85,12 +86,17 @@ object AlertApp {
       }
     }
 
-     val AlertInfoDstream: DStream[AlertInfo] = ifAlertInfoDstream.filter(_._1).map(_._2)
+     val alertInfoDstream: DStream[AlertInfo] = ifAlertInfoDstream.filter(_._1).map(_._2)
 
-    AlertInfoDstream.print()
-    
-    
-    
+//    alertInfoDstream.print()
+
+    //同一设备，每分钟只记录一次预警
+    alertInfoDstream.foreachRDD{rdd =>
+      rdd.foreachPartition{ alertInfoItr =>
+        val sourceList: scala.List[(String, AlertInfo)] = alertInfoItr.toList.map(alertInfo => (alertInfo.mid + "_" + alertInfo.ts/1000/60,alertInfo))
+        MyEsUtil.insertBulk(GmallConstant.ES_ALERT_INDEX_NAME,sourceList)
+      }
+    }
     
     
     ssc.start()
